@@ -28,10 +28,13 @@ export type OutgoingMessages = {
     type: "won";
     balance: number;
     locked: number;
+    wonAmount: number;
+    outcome: BettingNumber;
 } | {
     type: "lost";
     balance: number;
     locked: number;
+    outcome: BettingNumber;
 } | {
     type: "start-game"
 } | {

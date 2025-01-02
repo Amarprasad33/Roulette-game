@@ -55,4 +55,11 @@ export class UserManager {
     lost(id: number, amount: number, output: BettingNumber){
         this._users[id]?.lost(amount, output);
     }
+
+    flush(outcome: BettingNumber){
+        Object.keys(this._users).forEach((userId) => {
+            const user = this._users[userId] as User;
+            user.flush(outcome);
+        })
+    }
 }

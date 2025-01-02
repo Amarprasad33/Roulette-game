@@ -50,6 +50,7 @@ export class GameManager {
         })
 
         this.state = GameState.GameOver;
-        this._lastWinner = output
+        this._lastWinner = output;
+        UserManager.getInstance().flush(output);
     }
 }

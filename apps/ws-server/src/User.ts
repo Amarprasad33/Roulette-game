@@ -10,6 +10,7 @@ export class User {
     locked: number;
     ws: WebSocket;
     isAdmin: boolean;
+    lastWon: number;
 
     constructor(id: number, name: string, ws: WebSocket, isAdmin: boolean) {
         this.id = id;
@@ -18,6 +19,7 @@ export class User {
         this.ws = ws;
         this.locked = 0;
         this.isAdmin = isAdmin;
+        this.lastWon = 0;
         this.initHandlers();
     }
 
@@ -44,6 +46,26 @@ export class User {
                 console.error(e);
             }
         })
+    }
+
+    flush(outcome: BettingNumber){
+        if(this.lastWon === 0){
+            this.send({
+                type: "lost",
+                balance: this.balance,
+                locked: this.locked,
+                outcome: outcome
+            })
+        } else {
+            this.send({
+                type: "won",
+                balance: this.balance,
+                locked: this.locked,
+                wonAmount: this.lastWon,
+                outcome: outcome
+            })
+        }
+        this.lastWon = 0;
     }
 
     bet(cliendId: string, amount: COINS, betNumber: BettingNumber) {
@@ -84,21 +106,13 @@ export class User {
     }
 
     won(amount: number, output: BettingNumber){
-        this.balance += amount * (output === BettingNumber.Zero ? MULTIPLIER * 2 : MULTIPLIER);
+        const wonAmount = amount * (output === BettingNumber.Zero ? MULTIPLIER * 2 : MULTIPLIER);
+        this.balance += wonAmount;
         this.locked -= amount;
-        this.send({
-            type: "won",
-            balance: this.balance,
-            locked: this.locked,
-        })
+        this.lastWon += wonAmount;
     }
 
     lost(amount: number, _output: BettingNumber){
         this.locked -= amount;
-        this.send({
-            type: "lost",
-            balance: this.balance,
-            locked: this.locked,
-        })
     }
 }
