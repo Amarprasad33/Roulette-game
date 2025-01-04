@@ -52,5 +52,6 @@ export class GameManager {
         this.state = GameState.GameOver;
         this._lastWinner = output;
         UserManager.getInstance().flush(output);
+        this.bets = [];
     }
 }

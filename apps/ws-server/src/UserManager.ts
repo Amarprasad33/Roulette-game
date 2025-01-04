@@ -1,6 +1,7 @@
 import { WebSocket } from "ws";
 import { BettingNumber, OutgoingMessages } from '@repo/common/types'
 import { User } from "./User";
+import { GameManager } from "./GameManager";
 
 let ID = 1;
 
@@ -22,10 +23,14 @@ export class UserManager {
 
     addUser(ws: WebSocket, name: string, isAdmin: boolean) {
         let id = ID;
-        this._users[id] = new User(
+        const user = new User(
             id, name, ws, isAdmin
         );
-
+        this._users[id] = user;
+        user.send({
+            type: "current-state",
+            state: GameManager.getInstance().state
+        })
         ws.on("close", () => this.removeUser(id))
         ID++;
     }

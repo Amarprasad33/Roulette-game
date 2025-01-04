@@ -1,5 +1,5 @@
 import { WebSocket } from "ws";
-import { BettingNumber, COINS, IncomingMessages, OutgoingMessages } from "@repo/common/types";
+import { BettingNumber, COINS, GameState, IncomingMessages, OutgoingMessages } from "@repo/common/types";
 import { GameManager } from "./GameManager";
 const MULTIPLIER = 17;
 
@@ -28,19 +28,29 @@ export class User {
             try{
                 const message: IncomingMessages = JSON.parse(data);
                 if(message.type === "bet"){
+                    console.log("User bet");
                     this.bet(message.clientId, message.amount, message.number);
                 }
 
                 if(this.isAdmin && message.type === "start-game"){
-                    GameManager.getInstance().start();
+                    console.log("Starting game");
+                    if (GameManager.getInstance().state === GameState.GameOver){
+                        GameManager.getInstance().start();
+                    }
                 }
 
                 if(this.isAdmin && message.type === "end-game"){
-                    GameManager.getInstance().end(message.output);
+                    console.log("end game");
+                    if (GameManager.getInstance().state === GameState.CantBet){
+                        GameManager.getInstance().end(message.output);
+                    }
                 }
 
                 if(this.isAdmin && message.type === "stop-bets"){
-                    GameManager.getInstance().stopBets();
+                    console.log("Stop bets");
+                    if (GameManager.getInstance().state === GameState.CanBet){
+                        GameManager.getInstance().stopBets();
+                    }
                 }
             } catch (e) {
                 console.error(e);
