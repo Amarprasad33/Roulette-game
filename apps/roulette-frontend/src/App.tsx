@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Index from './pages';
+import Admin from './pages'
 
 function App() {
   const [count, setCount] = useState(0)
