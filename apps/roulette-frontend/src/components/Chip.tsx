@@ -12,7 +12,7 @@ const Chip: React.FC<ChipProps> = ({ value, selected, onClick, className }) => {
   const getChipColor = (value: number) => {
     switch (value) {
       case 1:
-        return "bg-chip-white border-chip-gray";
+        return "bg-chip-white border-chip-gray text-black";
       case 10:
         return "bg-chip-blue text-white";
       case 100:

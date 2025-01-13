@@ -22,11 +22,11 @@ export class User {
         this.lastWon = 0;
         this.initHandlers();
     }
-
     initHandlers(){
         this.ws.on("message", (data: string) => {
             try{
                 const message: IncomingMessages = JSON.parse(data);
+                console.log("message", message)
                 if(message.type === "bet"){
                     console.log("User bet");
                     this.bet(message.clientId, message.amount, message.number);

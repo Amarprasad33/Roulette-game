@@ -36,7 +36,7 @@ const RouletteTable = () => {
       return newBets;
     });
 
-    socket.send(JSON.stringify({
+    socket?.send(JSON.stringify({
       type: "bet",
       clientId: "1",
       amount: selectedChip,
@@ -109,7 +109,7 @@ const RouletteTable = () => {
       
       <div className="bg-table-green border-4 border-table-border rounded-lg p-8 shadow-2xl">
         {/* Numbers Grid */}
-        <div className="grid grid-cols-13 gap-1">
+        <div className="grid grid-cols-12 gap-1">
           {numbers.map((num) => (
             <div
               key={num}
@@ -154,7 +154,8 @@ const RouletteTable = () => {
       </div>
 
       {/* Chips Selection */}
-      {/* <div className="flex gap-4">
+      <div className="flex gap-4">
+        {/* {Object.values(COINS).filter(x => !isNaN(x as number))} */}
         {Object.values(COINS).filter(x => !isNaN(x as number)).map((value: COINS) => (
           <Chip
             key={value}
@@ -163,7 +164,7 @@ const RouletteTable = () => {
             onClick={() => setSelectedChip(value)}
           />
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };

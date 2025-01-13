@@ -4,7 +4,7 @@ import { UserManager } from "./UserManager";
 
 const wss = new WebSocketServer({ port: 8080 });
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-
+// To become admin go to admin route on FE and do /name=[ADMIN_Password] :: Admin-password is in the env
 wss.on('connection', function connection(ws, request) {
     const url = request.url;
     if(!url) return;
